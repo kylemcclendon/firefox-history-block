@@ -1,15 +1,21 @@
-# 🚀 Welcome to your new awesome project!
+# History Block
 
-This project has been created using **webpack-cli**, you can now run
+This project is a Firefox Extension meant to prevent saving of non-top level domains to History. Supports specifying exceptions in simple domains or regex style
 
-```
-npm run build
-```
+## How To Build
 
-or
+- Install Node 18 and NPM
+- Navigate to project root
+- Run `npm ci`
+- Run `npm run build`
+- Outputs to "dist" directory
 
-```
-yarn build
-```
+## Tools Used
 
-to bundle your application
+- Ubuntu 22.04.1 LTS
+- Node 18.13.0
+- NPM 8.19.3
+- Webpack (packaging and minification)
+- Babel (Transpiling from ES6+ to ES5 for compatability)
+- React (UI Development)
+- Material UI (@mui NPM library) (Material Components)

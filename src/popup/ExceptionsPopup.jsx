@@ -1,16 +1,15 @@
 import browser from "webextension-polyfill"
 import React, {useState, useEffect} from 'react'
-import { createRoot } from 'react-dom/client';
+import { createRoot } from 'react-dom/client'
 import Button from '@mui/material/Button'
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
 import Paper from '@mui/material/Paper'
 import Snackbar from '@mui/material/Snackbar'
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-
+import '@fontsource/roboto/300.css'
+import '@fontsource/roboto/400.css'
+import '@fontsource/roboto/500.css'
+import '@fontsource/roboto/700.css'
 
 import TopBar from './TopBar.jsx'
 import AddExceptionInput from './AddExceptionInput.jsx'
@@ -21,7 +20,7 @@ const darkTheme = createTheme({
   palette: {
     mode: 'dark',
   },
-});
+})
 
 const {storage} = browser
 const e = React.createElement
@@ -37,7 +36,7 @@ const ExceptionsPopup = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const [snackbarOpen, setSnackbarOpen] = useState(false)
 
-  const regex = /(http(s)?:\/\/)?(www\.)?[a-zA-Z0-9]+\.[a-zA-Z0-9]{1,5}\/.+/
+  const regex = /^(http(s)?:\/\/)?(www\.)?[a-zA-Z0-9]+\.[a-zA-Z0-9]{1,5}\/.+$/
 
   const updateExceptionVisibility = () => {
     if (filterText === '') {
