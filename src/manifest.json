@@ -1,0 +1,24 @@
+{
+
+  "manifest_version": 2,
+  "name": "History Block",
+  "version": "1.0",
+  "description": "Prevents saving of history if not top-level domain",
+  "icons": {
+    "48": "popup/icon2.png"
+  },
+  "background": {
+    "scripts": ["browser-polyfill.js", "history-block.js"],
+    "persistent": false
+  },
+  "browser_action": {
+    "browser_style": true,
+    "default_popup": "popup/ExceptionsPopup.html",
+    "default_icon": {
+      "16": "popup/icon2.png",
+      "32": "popup/icon2.png",
+      "48": "popup/icon2.png"
+    }
+  },
+  "permissions": ["activeTab","history","storage","tabs"]
+}
