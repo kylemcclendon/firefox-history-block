@@ -2,15 +2,26 @@ import React from 'react'
 import Box from '@mui/material/Box'
 import AppBar from '@mui/material/AppBar'
 import Typography from '@mui/material/Typography'
+import Toolbar from '@mui/material/Toolbar';
 
-const TopBar = () => (
-  <Box sx={{flexGrow: 1}}>
-    <AppBar position="static">
-      <Typography variant="h6" component="div" sx={{ flexGrow: 1, marginLeft: '10px', marginTop:'5px', display: 'block' }}>
-        History Block
-      </Typography>
-    </AppBar>
-  </Box>
-)
+function TopBar() {
+  return (
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{
+              flexGrow: 1, display: 'block',
+            }}
+          >
+            History Block
+          </Typography>
+        </Toolbar>
+      </AppBar>
+    </Box>
+  )
+}
 
 export default TopBar

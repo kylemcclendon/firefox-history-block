@@ -1,20 +1,14 @@
-import browser from "webextension-polyfill"
-import React, {useState, useEffect} from 'react'
+import browser from 'webextension-polyfill'
+import React, { useState, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
-import Button from '@mui/material/Button'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import Paper from '@mui/material/Paper'
-import Snackbar from '@mui/material/Snackbar'
-import '@fontsource/roboto/300.css'
-import '@fontsource/roboto/400.css'
-import '@fontsource/roboto/500.css'
-import '@fontsource/roboto/700.css'
 
-import TopBar from './TopBar.jsx'
-import AddExceptionInput from './AddExceptionInput.jsx'
-import ExceptionsList from './ExceptionsList.jsx'
-import Notifications from './Notifications.jsx'
+import TopBar from './TopBar'
+import AddExceptionInput from './AddExceptionInput'
+import ExceptionsList from './ExceptionsList'
+import Notifications from './Notifications'
 
 const darkTheme = createTheme({
   palette: {
@@ -22,17 +16,16 @@ const darkTheme = createTheme({
   },
 })
 
-const {storage} = browser
+const { storage } = browser
 const e = React.createElement
 
-const ExceptionsPopup = () => {
+function ExceptionsPopup() {
   const [currentExceptions, setCurrentExceptions] = useState([])
   const [visibleExceptions, setVisibleExceptions] = useState(currentExceptions)
   const [filterText, setFilterText] = useState('')
   const [oldExceptions, setOldExceptions] = useState(currentExceptions)
   const [addExceptionButtonDisabled, setAddExceptionButtonDisabled] = useState(true)
-  const [exceptionInput, setExceptionInput] = useState("")
-  const [selectedExceptions, setSelectedExceptions] = useState([])
+  const [exceptionInput, setExceptionInput] = useState('')
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const [snackbarOpen, setSnackbarOpen] = useState(false)
 
@@ -69,7 +62,7 @@ const ExceptionsPopup = () => {
   useEffect(() => {
     if (regex.test(exceptionInput) && !currentExceptions.includes(exceptionInput)) {
       setAddExceptionButtonDisabled(false)
-    } else if (addExceptionButtonDisabled === false){
+    } else if (addExceptionButtonDisabled === false) {
       setAddExceptionButtonDisabled(true)
     }
   }, [exceptionInput])
@@ -86,22 +79,22 @@ const ExceptionsPopup = () => {
   }
 
   const clearExceptions = async () => {
-    await storage.local.remove("exceptions")
-    setSnackbarMessage("Cleared All Stored Exceptions")
+    await storage.local.remove('exceptions')
+    setSnackbarMessage('Cleared All Stored Exceptions')
     setFilterText('')
     updateExceptions([])
   }
 
   const removeException = async (exceptionToRemove) => {
     const newExceptions = [...currentExceptions].filter((exception) => exception !== exceptionToRemove)
-    await storage.local.set({exceptions: newExceptions})
+    await storage.local.set({ exceptions: newExceptions })
     setSnackbarMessage(`${exceptionToRemove} Removed From Exceptions`)
     updateExceptions(newExceptions)
   }
 
   const addException = async () => {
     const newExceptions = [...currentExceptions, exceptionInput].sort()
-    await storage.local.set({exceptions: newExceptions})
+    await storage.local.set({ exceptions: newExceptions })
     setSnackbarMessage(`${exceptionInput} Added To Exceptions`)
     updateExceptions(newExceptions)
   }
@@ -113,16 +106,16 @@ const ExceptionsPopup = () => {
 
   const undo = async () => {
     closeSnackBar()
-    await storage.local.set({exceptions: oldExceptions})
+    await storage.local.set({ exceptions: oldExceptions })
     updateExceptions(oldExceptions)
   }
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <CssBaseline/>
-      <Paper sx={{width:'400px', maxHeight:'1000px'}}>
-        <TopBar/>
-        <div style={{marginLeft: '5px'}}>
+      <CssBaseline />
+      <Paper sx={{ width: '400px', maxHeight: '1000px' }}>
+        <TopBar />
+        <div style={{ marginLeft: '5px' }}>
           <AddExceptionInput
             exceptionInput={exceptionInput}
             setExceptionInput={setExceptionInput}
@@ -149,6 +142,7 @@ const ExceptionsPopup = () => {
   )
 }
 
+// eslint-disable-next-line no-undef
 const domContainer = document.querySelector('#exceptions-popup')
 const root = createRoot(domContainer)
 root.render(e(ExceptionsPopup))
