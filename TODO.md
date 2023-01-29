@@ -46,9 +46,6 @@ Features/Enhancements/Fixes TODO
   - probably would require a ui page. not sure how the webextension-polyfill works with that
 - Tests
   - verify the integrity of the extensions
-- Build Script
-  - Helps extension reviewers more quickly build it without having to follow README steps
-  - should check node version (exit with helper message), install deps, run the build, and output helpful message
 
 ## Bug Fixes
 
