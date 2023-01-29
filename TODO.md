@@ -50,6 +50,7 @@ Features/Enhancements/Fixes TODO
 ## Bug Fixes
 
 - Some exceptions don't work. Example: https://backloggery.com/games.php?user=ERROR372
+  - most likely has to do with the dot, question mark, or equals sign
 
 ## Future
 
