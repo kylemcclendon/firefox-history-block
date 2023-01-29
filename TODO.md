@@ -49,7 +49,7 @@ Features/Enhancements/Fixes TODO
 
 ## Bug Fixes
 
-- None Yet...
+- Some exceptions don't work. Example: https://backloggery.com/games.php?user=ERROR372
 
 ## Future
 
