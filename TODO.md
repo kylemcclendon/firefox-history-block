@@ -51,6 +51,7 @@ Features/Enhancements/Fixes TODO
 
 - Some exceptions don't work. Example: https://backloggery.com/games.php?user=ERROR372
   - most likely has to do with the dot, question mark, or equals sign
+- Doesn't support things not using www (such as docs.google.com)
 
 ## Future
 
