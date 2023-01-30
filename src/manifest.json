@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "History Block",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Prevents saving of history if not top-level domain",
   "icons": {
     "48": "icons/popup.png"

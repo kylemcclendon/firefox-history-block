@@ -26,7 +26,7 @@ Features/Enhancements/Fixes TODO
   - similar to something like UBlock settings page
   - makes for a more broad view of the state of the extension
 - Tracking?
-  - Number of history prevented
+  - Number of history prevented (total, this session, etc)
   - ?
 - Custom Icon
   - rather than just using a material-ui icon, make my own (and with the supported sizes)
@@ -49,9 +49,7 @@ Features/Enhancements/Fixes TODO
 
 ## Bug Fixes
 
-- Some exceptions don't work. Example: https://backloggery.com/games.php?user=ERROR372
-  - most likely has to do with the dot, question mark, or equals sign
-- Doesn't support things not using www (such as docs.google.com)
+- None Yet...
 
 ## Future
 

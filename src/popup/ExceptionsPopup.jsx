@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import browser from 'webextension-polyfill'
 import React, { useState, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -29,7 +30,12 @@ function ExceptionsPopup() {
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const [snackbarOpen, setSnackbarOpen] = useState(false)
 
-  const regex = /^(http(s)?:\/\/)?(www\.)?[a-zA-Z0-9]+\.[a-zA-Z0-9]{1,5}\/.+$/
+  const httpPrefix = '(http(s)?:\/\/)?'
+  const subdomainPrefix = '([a-zA-Z0-9]{1,10}\.)?'
+  const domain = '[a-zA-Z0-9]+'
+  const tld = '[a-zA-Z0-9]{1,5}'
+  const completeRegex = `${httpPrefix}${subdomainPrefix}${domain}\.${tld}\/.+`
+  const regex = new RegExp(completeRegex)
 
   const updateExceptionVisibility = () => {
     if (filterText === '') {

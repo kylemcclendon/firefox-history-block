@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import browser from 'webextension-polyfill'
 
 const { history, storage } = browser
@@ -5,13 +6,11 @@ const { history, storage } = browser
 const nonTopLevelDomainUrlRegex = /^(http(s)?:\/\/)?([a-zA-Z0-9]+\.)?[a-zA-Z0-9]+\.[a-zA-Z0-9]{1,5}\/.+$/
 
 const matchesException = (url, exception) => {
-  const regexifiedException = exception.replace(/[|\\{}()[\]^$+?.[/]]/g, '\\$&').replaceAll('*', '[a-zA-Z0-9]+')
-  // eslint-disable-next-line no-useless-escape
+  const regexifiedException = exception.replace(/[|\\{}()[\]^$+?.\/]/g, '\\$&').replaceAll('*', '[a-zA-Z0-9]+')
   const optionalHttpsPrefix = '(http(s)?:\/\/)?'
-  // eslint-disable-next-line no-useless-escape
   const optionalSubDomainPrefix = '([a-zA-Z0-9]+\.)?'
-  // eslint-disable-next-line no-useless-escape
-  const fullRegex = `^${optionalHttpsPrefix}${optionalSubDomainPrefix}${regexifiedException}(\/)?$`
+  const hasHTTPPrefix = url.startsWith('https://') || url.startsWith('http://')
+  const fullRegex = `^${!hasHTTPPrefix ? optionalHttpsPrefix : ''}${!hasHTTPPrefix ? optionalSubDomainPrefix : ''}${regexifiedException}(\/)?$`
 
   const exceptionWithOptionalPrefix = new RegExp(fullRegex)
   return exceptionWithOptionalPrefix.test(url)
