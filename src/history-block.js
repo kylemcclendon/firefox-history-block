@@ -9,7 +9,7 @@ const matchesException = (url, exception) => {
   const regexifiedException = exception.replace(/[|\\{}()[\]^$+?.\/]/g, '\\$&').replaceAll('*', '[a-zA-Z0-9]+')
   const optionalHttpsPrefix = '(http(s)?:\/\/)?'
   const optionalSubDomainPrefix = '([a-zA-Z0-9]+\.)?'
-  const hasHTTPPrefix = url.startsWith('https://') || url.startsWith('http://')
+  const hasHTTPPrefix = exception.startsWith('https://') || exception.startsWith('http://')
   const fullRegex = `^${!hasHTTPPrefix ? optionalHttpsPrefix : ''}${!hasHTTPPrefix ? optionalSubDomainPrefix : ''}${regexifiedException}(\/)?$`
 
   const exceptionWithOptionalPrefix = new RegExp(fullRegex)
