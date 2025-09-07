@@ -6,6 +6,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 const stylesHandler = MiniCssExtractPlugin.loader
 
 const config = {
+  devtool: 'source-map', // TODO remove
   entry: {
     './history-block': './src/history-block.js',
     './popup/ExceptionsPopup': './src/popup/ExceptionsPopup.jsx',

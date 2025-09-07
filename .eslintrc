@@ -1,5 +1,5 @@
 {
-  "extends": ["airbnb"],
+  "extends": [],
   "rules": {
     "semi": "off",
     "max-len": "off",

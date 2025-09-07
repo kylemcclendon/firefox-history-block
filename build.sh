@@ -10,7 +10,7 @@ if [ -z "$npmExists" ]; then
 fi
 
 if [ -z "$nodeExists" ]; then
-  echo 'Need to Install NodeJS 18.X.X'
+  echo 'Need to Install NodeJS 24.X.X'
   exit 1
 fi
 
@@ -21,14 +21,14 @@ echo "Verifying Valid NPM and NodeJS versions are installed..."
 npmVersion="$(npm -v)"
 nodeVersion="$(node -v)"
 
-if [[ "$npmVersion" =~ ^8\.[0-9]+\.[0-9]+$ ]]; then
+if [[ "$npmVersion" =~ ^11\.[0-9]+\.[0-9]+$ ]]; then
     echo "Using valid version of NPM"
 else
     echo "Need to be using NPM version 8.X.X"
     exit 1
 fi
 
-if [[ "$nodeVersion" =~ ^v18\.[0-9]+\.[0-9]+$ ]]; then
+if [[ "$nodeVersion" =~ ^v24\.[0-9]+\.[0-9]+$ ]]; then
     echo "Using valid version of NodeJS"
 else
     echo "Need to be using NodeJS version 18.X.X"

@@ -1,15 +1,17 @@
-/* eslint-disable no-useless-escape */
-import browser from 'webextension-polyfill'
 import React, { useState, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import Paper from '@mui/material/Paper'
-
+import Box from '@mui/material/Box'
+import Drawer from '@mui/material/Drawer'
+// import Collapse from '@mui/material/Collapse';
 import TopBar from './TopBar'
 import AddExceptionInput from './AddExceptionInput'
 import ExceptionsList from './ExceptionsList'
 import Notifications from './Notifications'
+import Settings from './Settings'
+import { getStorage, saveStorage, removeStorage } from '../storageHandler'
 
 const darkTheme = createTheme({
   palette: {
@@ -17,10 +19,15 @@ const darkTheme = createTheme({
   },
 })
 
-const { storage } = browser
 const e = React.createElement
 
-function ExceptionsPopup() {
+const deps = {
+  getStorage,
+  removeStorage,
+  saveStorage,
+}
+
+function ExceptionsPopup({ dependencies = deps }) {
   const [currentExceptions, setCurrentExceptions] = useState([])
   const [visibleExceptions, setVisibleExceptions] = useState(currentExceptions)
   const [filterText, setFilterText] = useState('')
@@ -29,6 +36,7 @@ function ExceptionsPopup() {
   const [exceptionInput, setExceptionInput] = useState('')
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const [snackbarOpen, setSnackbarOpen] = useState(false)
+  const [showSettings, setShowSettings] = useState(false)
 
   const httpPrefix = '(http(s)?:\/\/)?'
   const subdomainPrefix = '([a-zA-Z0-9]{1,10}\.)?'
@@ -46,10 +54,14 @@ function ExceptionsPopup() {
     }
   }
 
+  const toggleSettings = () => {
+    setShowSettings(!showSettings)
+  }
+
   useEffect(() => {
     const fetchData = async () => {
-      const result = await storage.local.get('exceptions')
-      const storedExceptions = result.exceptions || []
+      const result = await dependencies.getStorage('exceptions')
+      const storedExceptions = result || []
       setCurrentExceptions(storedExceptions)
     }
 
@@ -85,7 +97,7 @@ function ExceptionsPopup() {
   }
 
   const clearExceptions = async () => {
-    await storage.local.remove('exceptions')
+    await dependencies.removeStorage('exceptions')
     setSnackbarMessage('Cleared All Stored Exceptions')
     setFilterText('')
     updateExceptions([])
@@ -93,14 +105,14 @@ function ExceptionsPopup() {
 
   const removeException = async (exceptionToRemove) => {
     const newExceptions = [...currentExceptions].filter((exception) => exception !== exceptionToRemove)
-    await storage.local.set({ exceptions: newExceptions })
+    await dependencies.saveStorage('exceptions', newExceptions)
     setSnackbarMessage(`${exceptionToRemove} Removed From Exceptions`)
     updateExceptions(newExceptions)
   }
 
   const addException = async () => {
     const newExceptions = [...currentExceptions, exceptionInput].sort()
-    await storage.local.set({ exceptions: newExceptions })
+    await dependencies.saveStorage('exceptions', newExceptions)
     setSnackbarMessage(`${exceptionInput} Added To Exceptions`)
     updateExceptions(newExceptions)
   }
@@ -112,43 +124,59 @@ function ExceptionsPopup() {
 
   const undo = async () => {
     closeSnackBar()
-    await storage.local.set({ exceptions: oldExceptions })
+    await dependencies.saveStorage('exceptions', oldExceptions)
     updateExceptions(oldExceptions)
   }
 
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Paper sx={{ width: '400px', maxHeight: '1000px' }}>
-        <TopBar />
-        <div style={{ marginLeft: '5px' }}>
-          <AddExceptionInput
-            exceptionInput={exceptionInput}
-            setExceptionInput={setExceptionInput}
-            addException={addException}
-            addExceptionButtonDisabled={addExceptionButtonDisabled}
-          />
-          <ExceptionsList
-            numExceptions={currentExceptions.length}
-            filterText={filterText}
-            setFilterText={setFilterText}
-            visibleExceptions={visibleExceptions}
-            removeException={removeException}
-            clearExceptions={clearExceptions}
-          />
-        </div>
-        <Notifications
-          snackbarOpen={snackbarOpen}
-          closeSnackBar={closeSnackBar}
-          snackbarMessage={snackbarMessage}
-          undo={undo}
-        />
-      </Paper>
+      <Box>
+        <Paper sx={{ width: '400px', maxHeight: '1000px' }} elevation={0}>
+          <TopBar toggleSettings={toggleSettings} />
+          <Box>
+            <Drawer
+              sx={{ position: 'absolute' }}
+              anchor="right"
+              open={showSettings}
+              onClose={toggleSettings}
+            >
+              <Paper elevation={10}>
+                <Settings />
+              </Paper>
+            </Drawer>
+            <div style={{ marginLeft: '5px' }}>
+              <AddExceptionInput
+                exceptionInput={exceptionInput}
+                setExceptionInput={setExceptionInput}
+                addException={addException}
+                addExceptionButtonDisabled={addExceptionButtonDisabled}
+              />
+              <ExceptionsList
+                numExceptions={currentExceptions.length}
+                filterText={filterText}
+                setFilterText={setFilterText}
+                visibleExceptions={visibleExceptions}
+                removeException={removeException}
+                clearExceptions={clearExceptions}
+              />
+            </div>
+            <Notifications
+              snackbarOpen={snackbarOpen}
+              closeSnackBar={closeSnackBar}
+              snackbarMessage={snackbarMessage}
+              undo={undo}
+            />
+          </Box>
+        </Paper>
+      </Box>
     </ThemeProvider>
   )
 }
 
-// eslint-disable-next-line no-undef
-const domContainer = document.querySelector('#exceptions-popup')
-const root = createRoot(domContainer)
-root.render(e(ExceptionsPopup))
+export default ExceptionsPopup
+export function renderPopup() {
+  const domContainer = document.querySelector('#exceptions-popup')
+  const root = createRoot(domContainer)
+  root.render(e(ExceptionsPopup))
+}
