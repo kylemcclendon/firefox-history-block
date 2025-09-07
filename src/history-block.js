@@ -5,7 +5,7 @@ const { history } = browser
 
 const httpsRegex = '(http(s)?:\/\/)?'
 const wwwRegex = '([wW]{3}\.)?'
-const domainSubDomainRegex = '[a-zA-Z0-9])(\.[a-zA-Z0-9])*'
+const domainSubDomainRegex = '[a-zA-Z0-9](\.[a-zA-Z0-9])*'
 const extensionRegex = '[a-zA-Z0-9]{1,5}'
 const nonTopLevelDomainUrlRegex = new RegExp(`${httpsRegex}${wwwRegex}${domainSubDomainRegex}${extensionRegex}`)
 // const nonTopLevelDomainUrlRegex = /^httpsRegex([wW]{3})?([a-zA-Z0-9]+\.)?[a-zA-Z0-9]+\.[a-zA-Z0-9]{1,5}\/.+$/
