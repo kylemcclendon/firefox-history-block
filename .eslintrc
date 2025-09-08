@@ -1,9 +1,0 @@
-{
-  "extends": [],
-  "rules": {
-    "semi": "off",
-    "max-len": "off",
-    "react/function-component-definition": "off",
-    "import/no-extraneous-dependencies": "off"
-  }
-}

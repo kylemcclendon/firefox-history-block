@@ -5,12 +5,12 @@ npmExists="$(which npm)"
 nodeExists="$(which node)"
 
 if [ -z "$npmExists" ]; then
-  echo 'Need to Install NPM 8.X.X'
+  echo 'Install NPM 10 or 11'
   exit 1
 fi
 
 if [ -z "$nodeExists" ]; then
-  echo 'Need to Install NodeJS 24.X.X'
+  echo 'Install NodeJS 22 or 24'
   exit 1
 fi
 
@@ -21,22 +21,23 @@ echo "Verifying Valid NPM and NodeJS versions are installed..."
 npmVersion="$(npm -v)"
 nodeVersion="$(node -v)"
 
-if [[ "$npmVersion" =~ ^11\.[0-9]+\.[0-9]+$ ]]; then
+if [[ "$npmVersion" =~ ^1[01]\.[0-9]+\.[0-9]+$ ]]; then
     echo "Using valid version of NPM"
 else
-    echo "Need to be using NPM version 8.X.X"
+    echo "Need to be using NPM version 10 or 11"
     exit 1
 fi
 
-if [[ "$nodeVersion" =~ ^v24\.[0-9]+\.[0-9]+$ ]]; then
+if [[ "$nodeVersion" =~ ^v2[24]\.[0-9]+\.[0-9]+$ ]]; then
     echo "Using valid version of NodeJS"
 else
-    echo "Need to be using NodeJS version 18.X.X"
+    echo "Need to be using NodeJS version 22 or 24"
     exit 1
 fi
 
-echo "Installing NPM Dependencies From package-lock.json"
-npm ci
+# Enable the following 2 lines if you haven't already run npm ci or npm i (got tired of IDE indexing due to node_modules "changing" every npm ci)
+#echo "Installing NPM Dependencies From package-lock.json"
+#npm ci
 echo "Running 'npm run build'. This may take a minute..."
 npm run build
 echo "Source build completed. Zipping contents for upload"

@@ -1,13 +1,41 @@
-import browser from 'webextension-polyfill'
+let storage = null
 
-const { storage } = browser
+export const initializeStorageIfNeeded = async () => {
+  if (!storage) {
+    if (typeof browser !== 'undefined') {
+      const browser = await import('webextension-polyfill')
+      storage = browser.storage
+    } else {
+      storage = {
+        local: {
+          data: {},
+        }
+      }
+      storage.local.get = (item) => {
+        if (item === 'syncEnabled') {
+          return {syncEnabled: false}
+        }
+        return {[item]: storage.local.data[item]}
+      }
+      storage.local.set = (obj) => {
+        const key = Object.keys(obj)[0]
+        storage.local.data[key] = Object.values(obj)[0]
+      }
+      storage.local.remove = (key) => {
+        delete storage.local.data[key]
+      }
+    }
+  }
+}
 
 const isSyncEnabled = async () => {
+  await initializeStorageIfNeeded()
   const result = await storage.local.get('syncEnabled')
   return result.syncEnabled || false
 }
 
 export const saveStorage = async (key, value) => {
+  await initializeStorageIfNeeded()
   const syncEnabled = await isSyncEnabled()
 
   if (syncEnabled) {
@@ -17,6 +45,7 @@ export const saveStorage = async (key, value) => {
 }
 
 export const removeStorage = async (key) => {
+  await initializeStorageIfNeeded()
   const syncEnabled = await isSyncEnabled()
 
   if (syncEnabled) {
@@ -26,6 +55,7 @@ export const removeStorage = async (key) => {
 }
 
 export const getStorage = async (key) => {
+  await initializeStorageIfNeeded()
   const syncEnabled = await isSyncEnabled()
 
   if (syncEnabled) {
@@ -37,6 +67,7 @@ export const getStorage = async (key) => {
 }
 
 export const updateSyncStorage = async () => {
+  await initializeStorageIfNeeded()
   const currentStore = await storage.local.get('exceptions')
   await storage.sync.set({ exceptions: currentStore.exceptions })
 }

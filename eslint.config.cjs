@@ -8,19 +8,20 @@ const config = [
 		  react
 		},
 		languageOptions: {
-      			parserOptions: {
-        			ecmaFeatures: {
-          				jsx: true,
-        			},
-      			},
-      			globals: {
-        			...globals.browser,
-      			},
-    		},
-    		rules: {
-      			'react/jsx-uses-react': 'error',
-      			'react/jsx-uses-vars': 'error',
-     		},
+            parserOptions: {
+                ecmaFeatures: {
+                    jsx: true,
+                },
+            },
+            globals: {
+                ...globals.browser,
+            },
+        },
+        rules: {
+            'react/jsx-uses-react': 'error',
+            'react/jsx-uses-vars': 'error',
+        },
+        ignores: ['dist', 'node_modules', '.idea']
 	},
 ]
 

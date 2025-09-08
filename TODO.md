@@ -10,15 +10,16 @@ Features/Enhancements/Fixes TODO
 - Button to fill Add Exception input with current page url
 - Some way to persist a single page without adding it to exceptions to prevent exception list cluttering
   - not sure how to accomplish this. Possibly add an option to only delete new history?
-- Support sync storage
+- Test sync storage
+  - should be supported, but haven't tested it yet
 - Paginated exceptions list
-  - if it gets long enough, it might not render well
+  - if it gets long enough, it might not render well or be slow
 - Duplicate detection warning icon + text
   - Example www.example.com/test and www.example.com/*)
   - Text: "<exception> is covered by <wildcard_exception>"
   - Put this on both the add input, and in the list; Don't prevent adding it
-- On/Off Toggle
-  - might want to save history for a bit
+- Quicker On/Off Toggle
+  - somewhat annoying to enter the settings every time you want to disable
 - Open logger/debugger
   - add ***useful*** debug statements throughout
 - Internationalization
@@ -35,15 +36,12 @@ Features/Enhancements/Fixes TODO
 
 - Caching of exceptions so it isn't retrieved every time a page is visited
   - Would need to share data between the exceptions popup and the main js file
-- Make exceptions filter input stand out less
+- Make "Filter Exceptions" input stand out less
   - pulls your attention away, can make you want to try adding the exception in there
 - Shrink build output size
-  - probably some tree-shaking could be done
+  - probably some tree-shaking could be done (maybe using TS would simplify it?)
 - More refined UI
-  - initial ui is pretty dirty, despite using mui libs
-- Dev build
-  - so i can iterate faster. building, reloading, testing takes too long, when it's just a simple change.
-  - probably would require a ui page. not sure how the webextension-polyfill works with that
+  - initial ui is pretty dirty, despite using mui libs. Dammit Jim, I'm a software engineer, not a UX designer!
 - Tests
   - verify the integrity of the extensions
 
@@ -56,3 +54,5 @@ Features/Enhancements/Fixes TODO
 - Publish plugin for anyone to use
   - gotta get it up to snuff, and more generalized...
 - Translate this file to github issues/project tasks
+- Convert to Typescript?
+  - not a huge fan, but might simplify the build process instead of needing webpack/babel which are also annoying to deal with...

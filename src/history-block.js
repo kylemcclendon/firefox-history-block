@@ -1,22 +1,29 @@
 import browser from 'webextension-polyfill'
-import { getStorage } from './storageHandler'
+import { getStorage, initializeStorageIfNeeded, saveStorage } from './storageHandler'
 
 const { history } = browser
 
-const httpsRegex = '(http(s)?:\/\/)?'
-const wwwRegex = '([wW]{3}\.)?'
-const domainSubDomainRegex = '[a-zA-Z0-9](\.[a-zA-Z0-9])*'
-const extensionRegex = '[a-zA-Z0-9]{1,5}'
-const nonTopLevelDomainUrlRegex = new RegExp(`${httpsRegex}${wwwRegex}${domainSubDomainRegex}${extensionRegex}`)
-// const nonTopLevelDomainUrlRegex = /^httpsRegex([wW]{3})?([a-zA-Z0-9]+\.)?[a-zA-Z0-9]+\.[a-zA-Z0-9]{1,5}\/.+$/
+const httpsRegex = '(http(s)?:\\/\\/)?'
+const wwwRegex = '([wW]{3}\\.)?'
+const domainSubDomainRegex = '[a-zA-Z0-9]+(\\.([a-zA-Z0-9])+)*'
+const extensionRegex = '\\.[a-zA-Z0-9]{1,5}'
+const nonTopLevelDomainUrlRegex = new RegExp(`^${httpsRegex}${wwwRegex}${domainSubDomainRegex}${extensionRegex}\/.+$`)
+
+const setupExtension = async () => {
+  await initializeStorageIfNeeded()
+  const enabledResult = await getStorage('extensionEnabled')
+
+  if (!enabledResult) {
+    await saveStorage('extensionEnabled', true)
+  }
+}
 
 const matchesException = (url, exception) => {
   const regexifiedException = exception.replace(/[|\\{}()[\]^$+?.\/]/g, '\\$&').replaceAll('*', '[a-zA-Z0-9]+')
-  // const optionalHttpsPrefix = '(http(s)?:\/\/)?'
-  // const optionalSubDomainPrefix = '([a-zA-Z0-9]+\.)?'
-  // const hasHTTPPrefix = exception.startsWith('https://') || exception.startsWith('http://')
-  // const fullRegex = `^${!hasHTTPPrefix ? optionalHttpsPrefix : ''}${!hasHTTPPrefix ? optionalSubDomainPrefix : ''}${regexifiedException}(\/)?$`
-  const fullRegex = `${httpsRegex}${wwwRegex}${regexifiedException}`
+  const optionalHttpsRegex = exception.includes('http://') || exception.includes('https://') ? '' : httpsRegex
+  const optionalWWWRegex = exception.includes('www.') ? '' : wwwRegex
+  const optionalEndingSlash = exception.endsWith('/') ? '' : '\/?'
+  const fullRegex = `^${optionalHttpsRegex}${optionalWWWRegex}${regexifiedException}${optionalEndingSlash}$`
 
   const exceptionWithOptionalPrefix = new RegExp(fullRegex)
   return exceptionWithOptionalPrefix.test(url)
@@ -28,7 +35,7 @@ const onVisited = async (historyItem) => {
   const isNonTopLevelDomain = nonTopLevelDomainUrlRegex.test(url)
 
   if (isNonTopLevelDomain) {
-    const enabledResult = await getStorage('enabled')
+    const enabledResult = await getStorage('extensionEnabled')
 
     if (!enabledResult) {
       return
@@ -44,4 +51,6 @@ const onVisited = async (historyItem) => {
   }
 }
 
-history.onVisited.addListener(onVisited)
+setupExtension().then(() => {
+  history.onVisited.addListener(onVisited)
+})

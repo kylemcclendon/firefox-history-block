@@ -5,7 +5,6 @@ import CssBaseline from '@mui/material/CssBaseline'
 import Paper from '@mui/material/Paper'
 import Box from '@mui/material/Box'
 import Drawer from '@mui/material/Drawer'
-// import Collapse from '@mui/material/Collapse';
 import TopBar from './TopBar'
 import AddExceptionInput from './AddExceptionInput'
 import ExceptionsList from './ExceptionsList'
@@ -24,7 +23,7 @@ const e = React.createElement
 const deps = {
   getStorage,
   removeStorage,
-  saveStorage,
+  saveStorage
 }
 
 function ExceptionsPopup({ dependencies = deps }) {
@@ -142,7 +141,7 @@ function ExceptionsPopup({ dependencies = deps }) {
               onClose={toggleSettings}
             >
               <Paper elevation={10}>
-                <Settings />
+                <Settings setShowSettings={setShowSettings}/>
               </Paper>
             </Drawer>
             <div style={{ marginLeft: '5px' }}>
@@ -174,9 +173,12 @@ function ExceptionsPopup({ dependencies = deps }) {
   )
 }
 
-export default ExceptionsPopup
-export function renderPopup() {
+function renderPopup() {
   const domContainer = document.querySelector('#exceptions-popup')
+  if (!domContainer) throw new Error("Can't find Popup element");
   const root = createRoot(domContainer)
-  root.render(e(ExceptionsPopup))
+  root.render(<ExceptionsPopup />)
 }
+
+renderPopup()
+// export {ExceptionsPopup}

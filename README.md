@@ -1,6 +1,13 @@
 # History Block
 
-This project is a Firefox Extension meant to prevent saving of non-top level domains to History. Supports specifying exceptions in simple domains or using wildcards
+This project is a Firefox Extension meant to prevent saving of non-root domains to History. Supports specifying exceptions in simple domains or using wildcards
+
+Examples:
+
+- https://www.google.com (auto-saved by being a root level domain)
+- https://www.youtube.com/watch?<some-video-id> (deleted for not being a root level domain)
+- https://www.reddit.com/r/reddit (with a defined exception of "https://www.reddit.com/r/*", saved for matching exception)
+- https://www.reddit.com/r/reddit/comments... (with a defined exception of "https://www.reddit.com/r/*", deleted for not matching any exception)
 
 ## How To Build
 
@@ -8,7 +15,7 @@ This project is a Firefox Extension meant to prevent saving of non-top level dom
 
 OR
 
-- Install Node 18 and NPM 8 (if not already installed)
+- Install Node 24 and NPM 11 (if not already installed)
 - Navigate to project root
 - Run `npm ci`
 - Run `npm run build`
@@ -19,10 +26,10 @@ OR
 
 ## Tools Used
 
-- Ubuntu 22.04.1 LTS
-  - BASH & ZSH
-- Node 18.13.0
-- NPM 8.19.3
+- Ubuntu 24.04.3 LTS
+- BASH
+- Node 24.7.0
+- NPM 11.5.1
 - Webpack (packaging and minification)
 - Babel (Transpiling from ES6+ to ES5 for compatability)
 - React (UI Development)
