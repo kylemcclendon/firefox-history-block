@@ -1,5 +1,5 @@
 import browser from 'webextension-polyfill'
-import { getStorage, initializeStorageIfNeeded, saveStorage } from './storageHandler'
+import { getStorage, initializeStorageIfNeeded, saveStorage } from './storageHandler.js'
 
 const { history } = browser
 
@@ -9,7 +9,7 @@ const domainSubDomainRegex = '[a-zA-Z0-9]+(\\.([a-zA-Z0-9])+)*'
 const extensionRegex = '\\.[a-zA-Z0-9]{1,5}'
 const nonTopLevelDomainUrlRegex = new RegExp(`^${httpsRegex}${wwwRegex}${domainSubDomainRegex}${extensionRegex}\/.+$`)
 
-const setupExtension = async () => {
+async function setupExtension() {
   await initializeStorageIfNeeded()
   const enabledResult = await getStorage('extensionEnabled')
 
@@ -18,7 +18,7 @@ const setupExtension = async () => {
   }
 }
 
-const matchesException = (url, exception) => {
+const matchesException = (url: string, exception: string) => {
   const regexifiedException = exception.replace(/[|\\{}()[\]^$+?.\/]/g, '\\$&').replaceAll('*', '[a-zA-Z0-9]+')
   const optionalHttpsRegex = exception.includes('http://') || exception.includes('https://') ? '' : httpsRegex
   const optionalWWWRegex = exception.includes('www.') ? '' : wwwRegex
@@ -29,7 +29,7 @@ const matchesException = (url, exception) => {
   return exceptionWithOptionalPrefix.test(url)
 }
 
-const onVisited = async (historyItem) => {
+const onVisited = async (historyItem: any) => {
   const { url } = historyItem
 
   const isNonTopLevelDomain = nonTopLevelDomainUrlRegex.test(url)
@@ -43,7 +43,7 @@ const onVisited = async (historyItem) => {
 
     const exceptionsResult = await getStorage('exceptions')
     const storedExceptions = exceptionsResult || []
-    const isException = storedExceptions.some((exception) => matchesException(url, exception))
+    const isException = storedExceptions.some((exception: string) => matchesException(url, exception))
 
     if (!isException) {
       await history.deleteUrl({ url })

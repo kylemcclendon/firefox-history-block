@@ -7,8 +7,9 @@ import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import Toolbar from '@mui/material/Toolbar'
-import { getStorage, saveStorage, updateSyncStorage } from '../storageHandler'
+import { getStorage, saveStorage, updateSyncStorage } from '../storageHandler.js'
 
+// @ts-expect-error TODO
 function Settings({setShowSettings}) {
   const [extensionEnabled, setExtensionEnabled] = useState(true)
   const [syncStorageEnabled, setSyncStorageEnabled] = useState(false)
@@ -41,7 +42,7 @@ function Settings({setShowSettings}) {
     <div style={{ padding: '10px' }}>
       <Toolbar>
         <Typography
-          use="h6"
+          variant="h6"
           component="div"
           sx={{
             flexGrow: 1, display: 'block',

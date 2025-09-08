@@ -5,20 +5,18 @@ import CssBaseline from '@mui/material/CssBaseline'
 import Paper from '@mui/material/Paper'
 import Box from '@mui/material/Box'
 import Drawer from '@mui/material/Drawer'
-import TopBar from './TopBar'
-import AddExceptionInput from './AddExceptionInput'
-import ExceptionsList from './ExceptionsList'
-import Notifications from './Notifications'
-import Settings from './Settings'
-import { getStorage, saveStorage, removeStorage } from '../storageHandler'
+import TopBar from './TopBar.js'
+import AddExceptionInput from './AddExceptionInput.js'
+import ExceptionsList from './ExceptionsList.js'
+import Notifications from './Notifications.js'
+import Settings from './Settings.js'
+import { getStorage, saveStorage, removeStorage } from '../storageHandler.js'
 
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
   },
 })
-
-const e = React.createElement
 
 const deps = {
   getStorage,
@@ -27,15 +25,15 @@ const deps = {
 }
 
 function ExceptionsPopup({ dependencies = deps }) {
-  const [currentExceptions, setCurrentExceptions] = useState([])
-  const [visibleExceptions, setVisibleExceptions] = useState(currentExceptions)
-  const [filterText, setFilterText] = useState('')
-  const [oldExceptions, setOldExceptions] = useState(currentExceptions)
-  const [addExceptionButtonDisabled, setAddExceptionButtonDisabled] = useState(true)
-  const [exceptionInput, setExceptionInput] = useState('')
-  const [snackbarMessage, setSnackbarMessage] = useState('')
-  const [snackbarOpen, setSnackbarOpen] = useState(false)
-  const [showSettings, setShowSettings] = useState(false)
+  const [currentExceptions, setCurrentExceptions] = useState<string[]>([])
+  const [visibleExceptions, setVisibleExceptions] = useState<string[]>(currentExceptions)
+  const [filterText, setFilterText] = useState<string>('')
+  const [oldExceptions, setOldExceptions] = useState<string[]>(currentExceptions)
+  const [addExceptionButtonDisabled, setAddExceptionButtonDisabled] = useState<boolean>(true)
+  const [exceptionInput, setExceptionInput] = useState<string>('')
+  const [snackbarMessage, setSnackbarMessage] = useState<string>('')
+  const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false)
+  const [showSettings, setShowSettings] = useState<boolean>(false)
 
   const httpPrefix = '(http(s)?:\/\/)?'
   const subdomainPrefix = '([a-zA-Z0-9]{1,10}\.)?'
@@ -79,7 +77,7 @@ function ExceptionsPopup({ dependencies = deps }) {
   useEffect(() => {
     if (regex.test(exceptionInput) && !currentExceptions.includes(exceptionInput)) {
       setAddExceptionButtonDisabled(false)
-    } else if (addExceptionButtonDisabled === false) {
+    } else if (!addExceptionButtonDisabled) {
       setAddExceptionButtonDisabled(true)
     }
   }, [exceptionInput])
@@ -90,7 +88,7 @@ function ExceptionsPopup({ dependencies = deps }) {
     }
   }, [snackbarMessage])
 
-  const updateExceptions = (newExceptions) => {
+  const updateExceptions = (newExceptions: string[]) => {
     setOldExceptions(currentExceptions)
     setCurrentExceptions(newExceptions)
   }
@@ -102,7 +100,7 @@ function ExceptionsPopup({ dependencies = deps }) {
     updateExceptions([])
   }
 
-  const removeException = async (exceptionToRemove) => {
+  const removeException = async (exceptionToRemove: string) => {
     const newExceptions = [...currentExceptions].filter((exception) => exception !== exceptionToRemove)
     await dependencies.saveStorage('exceptions', newExceptions)
     setSnackbarMessage(`${exceptionToRemove} Removed From Exceptions`)

@@ -14,6 +14,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 function ExceptionsList({
+    // @ts-expect-error TODO
   numExceptions, filterText, setFilterText, visibleExceptions, removeException, clearExceptions,
 }) {
   return (
@@ -32,7 +33,7 @@ function ExceptionsList({
         </Stack>
         <List sx={{ maxHeight: '200px', overflow: 'scroll' }}>
           {
-          visibleExceptions.map((exception) => (
+          visibleExceptions.map((exception: string) => (
             <ListItem secondaryAction={(
               <IconButton onClick={() => removeException(exception)}>
                 <DeleteIcon />

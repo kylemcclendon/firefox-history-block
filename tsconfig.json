@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "lib": ["esnext", "dom"],
+    "jsx": "react",
+    "target": "ES6",
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "outDir": "./dist",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "module": "NodeNext"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["**/*.spec.ts"]
+}

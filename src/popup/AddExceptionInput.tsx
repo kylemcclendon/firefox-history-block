@@ -5,6 +5,7 @@ import AddIcon from '@mui/icons-material/Add'
 import PropTypes from 'prop-types'
 
 function AddExceptionInput({
+    // @ts-expect-error TODO
   exceptionInput, setExceptionInput, addException, addExceptionButtonDisabled,
 }) {
   return (
@@ -14,7 +15,7 @@ function AddExceptionInput({
         variant="standard"
         value={exceptionInput}
         onKeyDown={(e) => { if (e.key === 'Enter' && !addExceptionButtonDisabled) { addException(exceptionInput) } }}
-        onChange={(v) => setExceptionInput(v.target.value)}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => setExceptionInput(event.target.value)}
         placeholder="e.x. https://www.example.com/subpath"
       />
       <IconButton onClick={addException} disabled={addExceptionButtonDisabled}>

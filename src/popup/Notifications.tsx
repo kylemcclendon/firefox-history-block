@@ -3,6 +3,7 @@ import Snackbar from '@mui/material/Snackbar'
 import Button from '@mui/material/Button'
 import PropTypes from 'prop-types'
 
+// @ts-expect-error TODO
 const UndoButton = ({ undo }) => (
   <Button color="secondary" size="small" onClick={undo}>
     UNDO
@@ -14,6 +15,7 @@ UndoButton.propTypes = {
 }
 
 function Notifications({
+    // @ts-expect-error TODO
   snackbarOpen, closeSnackBar, snackbarMessage, undo,
 }) {
   return (

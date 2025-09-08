@@ -3,10 +3,11 @@ import Box from '@mui/material/Box'
 import AppBar from '@mui/material/AppBar'
 import Typography from '@mui/material/Typography'
 import Toolbar from '@mui/material/Toolbar'
-import SettingsIcon from '@mui/icons-material/Settings';
+import SettingsIcon from '@mui/icons-material/Settings'
 import IconButton from '@mui/material/IconButton'
 import PropTypes from 'prop-types'
 
+// @ts-expect-error TODO
 function TopBar({ toggleSettings }) {
   return (
     <Box sx={{ flexGrow: 1 }}>
