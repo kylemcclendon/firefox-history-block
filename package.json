@@ -1,6 +1,6 @@
 {
   "name": "history-block",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Firefox Extension to block non-top level domains",
   "main": "history-block.js",
   "scripts": {
